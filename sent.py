@@ -2,11 +2,10 @@ import numpy as np
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import requests
 import json
-#import seaborn as sns
-#import matplotlib.pyplot as plt
+from urllib.parse import quote
 
 apiKey = ''
-fromDate = '2019-07-25'
+fromDate = '2019-07-05'
 
 def getNews(query):
     endpoint = f'https://newsapi.org/v2/everything?language=en&pageSize=100&from={fromDate}&q={query}&apiKey={apiKey}'
@@ -30,12 +29,10 @@ def analyzeSentiments(headlines):
             pass
     return sentiments
 
-
-news = getNews('bynd')
+query = 'BYND OR (beyond meat)'
+encoded = quote(query)
+news = getNews(encoded)
 headlines = getHeadlines(news)
 sentiments = analyzeSentiments(headlines)
 
-print(sentiments.mean(), sentiments.std())
-#sns.distplot(sentiments)
-#plt.axvline()
-#plt.show()
+print(sentiments.mean(), sentiments.std(), len(sentiments))
